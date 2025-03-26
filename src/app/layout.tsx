@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang="ja">
       <body
         className={`${notoSansJP.variable} antialiased`}
+        style={{ fontFamily: `"游ゴシック", "Yu Gothic", sans-serif, "Noto sans JP"`}}
       >
         {children}
       </body>
