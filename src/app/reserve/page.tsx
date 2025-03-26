@@ -16,30 +16,30 @@ const ALL_SLOTS = [
   { label: "18-22", start: "18:00:00", end: "22:00:00" },
   { label: "9-22", start: "09:00:00", end: "22:00:00" }
 ];
-const { data, error } = await supabase
-  .rpc('register_customer_and_reservation', {
-    name: 'shinopan', //text
-    phone: '09012345678', //phone　ハイフンなし
-    email: 'yamada@example.com', //email
-    company_name: '株式会社ABC', //text
-    studio_name: '渋谷スタジオ', //text
-    reservation_date: '2025-03-22', //カレンダーの日付選択で自動入力
-    start_time: '18:00:00', //カレンダーの日付の中の時間帯選択で自動入力
-    end_time: '22:00:00', //カレンダーの日付の中の時間帯選択で自動入力
-    usage_type: '商業利用', //text
-    notes: '撮影後に簡単な打ち合わせ希望', //text
-    participants: 5, //number
-    parking_required: true, //boolean
-    shooting_details: 'CM撮影', //text
-    receipt_required: false, //boolean
-    option_details: 'プロカメラマン手配' //text
-  });
+// const { data, error } = await supabase
+//   .rpc('register_customer_and_reservation', {
+//     name: 'shinopan', //text
+//     phone: '09012345678', //phone　ハイフンなし
+//     email: 'yamada@example.com', //email
+//     company_name: '株式会社ABC', //text
+//     studio_name: '渋谷スタジオ', //text
+//     reservation_date: '2025-03-22', //カレンダーの日付選択で自動入力
+//     start_time: '18:00:00', //カレンダーの日付の中の時間帯選択で自動入力
+//     end_time: '22:00:00', //カレンダーの日付の中の時間帯選択で自動入力
+//     usage_type: '商業利用', //text
+//     notes: '撮影後に簡単な打ち合わせ希望', //text
+//     participants: 5, //number
+//     parking_required: true, //boolean
+//     shooting_details: 'CM撮影', //text
+//     receipt_required: false, //boolean
+//     option_details: 'プロカメラマン手配' //text
+//   });
 
-if (error) {
-  console.error('予約登録エラー:', error);
-} else {
-  console.log('予約成功:', data);
-}
+// if (error) {
+//   console.error('予約登録エラー:', error);
+// } else {
+//   console.log('予約成功:', data);
+// }
 
 export default function ReservePage() {
   const [date, setDate] = useState<Value>(null);
@@ -47,8 +47,8 @@ export default function ReservePage() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  // const [loading, setLoading] = useState(false);
+  // const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetchReservations();
@@ -106,33 +106,33 @@ export default function ReservePage() {
   };
 
   // 仮予約を登録
-  const handleReservation = async () => {
-    if (!date || !(date instanceof Date) || !selectedSlot || !name || !email) {
-      setMessage("すべての項目を入力してください");
-      return;
-    }
+  // const handleReservation = async () => {
+  //   if (!date || !(date instanceof Date) || !selectedSlot || !name || !email) {
+  //     setMessage("すべての項目を入力してください");
+  //     return;
+  //   }
 
-    setLoading(true);
-    setMessage("");
+  //   setLoading(true);
+  //   setMessage("");
 
-    const dateString = date.toISOString().split("T")[0];
+  //   const dateString = date.toISOString().split("T")[0];
 
-    const { error } = await supabase.from("reservations").insert([
-      { date: dateString, time_slot: selectedSlot, name, email, status: "pending" }
-    ]);
+  //   const { error } = await supabase.from("reservations").insert([
+  //     { date: dateString, time_slot: selectedSlot, name, email, status: "pending" }
+  //   ]);
 
-    setLoading(false);
-    if (error) {
-      console.error(error);
-      setMessage("予約に失敗しました");
-    } else {
-      setMessage(`仮予約を登録しました（${dateString} - ${selectedSlot}）`);
-      fetchReservations(); // 予約データを再取得
-      setSelectedSlot(null);
-      setName("");
-      setEmail("");
-    }
-  };
+  //   setLoading(false);
+  //   if (error) {
+  //     console.error(error);
+  //     setMessage("予約に失敗しました");
+  //   } else {
+  //     setMessage(`仮予約を登録しました（${dateString} - ${selectedSlot}）`);
+  //     fetchReservations(); // 予約データを再取得
+  //     setSelectedSlot(null);
+  //     setName("");
+  //     setEmail("");
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center p-6">
