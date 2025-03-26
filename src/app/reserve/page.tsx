@@ -45,8 +45,8 @@ export default function ReservePage() {
   const [date, setDate] = useState<Value>(null);
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
   // const [loading, setLoading] = useState(false);
   // const [message, setMessage] = useState("");
 
@@ -77,8 +77,8 @@ export default function ReservePage() {
   const handleDateSelect = (value: Value) => {
     setDate(value);
     setSelectedSlot(null);
-    setName("");
-    setEmail("");
+    // setName("");
+    // setEmail("");
 
     if (!value || !(value instanceof Date)) return;
     const jstDate = new Date(value.getTime() + 9 * 60 * 60 * 1000); // 9時間（ミリ秒換算）を加算
