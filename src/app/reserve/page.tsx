@@ -306,14 +306,14 @@ export default function ReservePage() {
             className="w-full p-2 border rounded"
           />
 
+          <label className="block mt-2">撮影内容</label>
+          <textarea name="shootingDetails" value={formData.shootingDetails} onChange={handleInputChange} className="w-full p-2 border rounded" rows={3} />
+
           {/* チェックボックス */}
           <div className="mt-4 flex items-center">
             <input type="checkbox" name="parkingRequired" checked={formData.parkingRequired} onChange={handleCheckboxChange} />
-            <label className="ml-2">駐車場利用</label>
+            <label className="ml-2">駐車場を利用する</label>
           </div>
-
-          <label className="block mt-2">撮影内容</label>
-          <textarea name="shootingDetails" value={formData.shootingDetails} onChange={handleInputChange} className="w-full p-2 border rounded" rows={3} />
 
           <div className="mt-4 flex items-center">
             <input type="checkbox" name="receiptRequired" checked={formData.receiptRequired} onChange={handleCheckboxChange} />
