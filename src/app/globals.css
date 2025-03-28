@@ -14,8 +14,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* --background: #0a0a0a;
+    --foreground: #ededed; */
+    --background: #ededed;
+    --foreground: #282828;
   }
 }
 
@@ -30,6 +32,7 @@ body {
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;
+  background-color: #ffffff;
 }
 
 .my-calendar {
