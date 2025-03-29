@@ -173,7 +173,9 @@ export default function ReservePage() {
     setFormData((prev) => ({ ...prev, [name]: checked }));
   };
 
-  const handleReservation = async () => {
+  const handleReservation = async (event: React.FormEvent) => {
+    event.preventDefault(); // フォーム送信動作をキャンセル
+
     if (!date) {
       alert("カレンダーから日付を選択してください。");
       return;
@@ -340,7 +342,7 @@ export default function ReservePage() {
       </div>
       <div className="inner pb-5">
         <h2 className="text-lg text-center font-semibold mb-2">予約情報入力</h2>
-        <form>
+        <form onSubmit={handleReservation}>
           <div className="mt-6 w-full p-4 border rounded">
             {/* 顧客情報 */}
             <div>
@@ -614,7 +616,7 @@ export default function ReservePage() {
 
             <button
               className="w-full mt-6 bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-              onClick={handleReservation}
+              // onClick={handleReservation}
             >
               仮予約する
             </button>
