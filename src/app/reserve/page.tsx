@@ -75,7 +75,7 @@ export default function ReservePage() {
 
   const {
     register,
-    trigger,
+    // trigger,
     setValue, // setValueを使用
     formState: { errors },
   } = useForm({
