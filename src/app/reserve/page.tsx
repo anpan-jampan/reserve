@@ -15,6 +15,10 @@ const ALL_SLOTS = [
   { label: "18時～22時", start: "18:00:00", end: "22:00:00" },
   { label: "9時～22時", start: "09:00:00", end: "22:00:00" },
 ];
+const today = new Date();
+// 3か月後の日付
+const threeMonthsLater = new Date();
+threeMonthsLater.setMonth(today.getMonth() + 3);
 
 const reservationSchema = z.object({
   name: z.string().min(1, "名前は必須です").max(50, "50文字以内で入力してください"),
@@ -261,6 +265,9 @@ export default function ReservePage() {
           onClickDay={handleDateSelect}
           value={date}
           className="my-calendar"
+          tileDisabled={
+            ({ date }) => date < today || date > threeMonthsLater // 当日より前または3か月後より後を無効化
+          }
           tileContent={({ date }) => {
             const jstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000); // 9時間（ミリ秒換算）を加算
             const dateString = jstDate.toISOString().split("T")[0];
