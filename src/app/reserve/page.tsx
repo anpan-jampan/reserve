@@ -152,10 +152,10 @@ export default function ReservePage() {
     setAvailableSlots(available.map((slot) => slot.label));
   };
 
-  const doCheck = async (fieldName: keyof typeof reservationSchema._type) => {
-    const result = await trigger(fieldName);
-    console.log(`バリデーションチェック結果（${fieldName}）:`, result);
-  };
+  // const doCheck = async (fieldName: keyof typeof reservationSchema._type) => {
+  //   const result = await trigger(fieldName);
+  //   console.log(`バリデーションチェック結果（${fieldName}）:`, result);
+  // };
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -173,7 +173,7 @@ export default function ReservePage() {
     setFormData((prev) => ({ ...prev, [name]: checked }));
   };
 
-  const handleReservation = async (data: any) => {
+  const handleReservation = async () => {
     if (!date) {
       alert("カレンダーから日付を選択してください。");
       return;
