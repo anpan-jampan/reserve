@@ -17,14 +17,8 @@ const ALL_SLOTS = [
 ];
 
 const reservationSchema = z.object({
-  name: z
-    .string()
-    .min(1, "名前は必須です")
-    .max(50, "50文字以内で入力してください"),
-  nameKana: z
-    .string()
-    .min(1, "フリガナは必須です")
-    .max(100, "100文字以内で入力してください"),
+  name: z.string().min(1, "名前は必須です").max(50, "50文字以内で入力してください"),
+  nameKana: z.string().min(1, "フリガナは必須です").max(100, "100文字以内で入力してください"),
   phone: z.string().regex(/^\d+$/, "半角数字のみで入力してください"),
   email: z.string().email("有効なメールアドレスを入力してください"),
   company: z.string().max(100, "100文字以内で入力してください").optional(),
@@ -38,10 +32,7 @@ const reservationSchema = z.object({
       message: "1以上の数値を入力してください",
     })
     .optional(),
-  shootingDetails: z
-    .string()
-    .max(200, "200文字以内で入力してください")
-    .optional(),
+  shootingDetails: z.string().max(200, "200文字以内で入力してください").optional(),
   termsAgreed: z.boolean().refine((val) => val, "利用規約に同意が必要です"),
 });
 
@@ -137,13 +128,11 @@ export default function ReservePage() {
     const available = ALL_SLOTS.filter((slot) => {
       // 満室かどうか
       const isFullyBooked = reservedSlots.some(
-        (reservation) =>
-          reservation.start <= slot.start && reservation.end >= slot.end
+        (reservation) => reservation.start <= slot.start && reservation.end >= slot.end
       );
       // 部分的に予約があるか
       const isPartiallyBooked = reservedSlots.some(
-        (reservation) =>
-          reservation.start < slot.end && reservation.end > slot.start
+        (reservation) => reservation.start < slot.end && reservation.end > slot.start
       );
       // 予約なしならtrueで表示
       return !(isFullyBooked || isPartiallyBooked);
@@ -158,9 +147,7 @@ export default function ReservePage() {
   // };
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -182,9 +169,7 @@ export default function ReservePage() {
     }
     const jstDate = new Date((date as Date).getTime() + 9 * 60 * 60 * 1000);
     const reservationDate = jstDate.toISOString().split("T")[0];
-    const selectedSlotInfo = ALL_SLOTS.find(
-      (slot) => slot.label === selectedSlot
-    );
+    const selectedSlotInfo = ALL_SLOTS.find((slot) => slot.label === selectedSlot);
     const price = formData.usageType === "個人利用" ? 20000 : 40000;
 
     if (
@@ -222,14 +207,12 @@ export default function ReservePage() {
       _usage_type: formData.usageType,
       _price: price,
       _notes: formData.notes,
-      _participants: formData.participants
-        ? parseInt(formData.participants, 10) || null
-        : null,
+      _participants: formData.participants ? parseInt(formData.participants, 10) || null : null,
       _parking_required: formData.parkingRequired,
       _shooting_details: formData.shootingDetails,
       _receipt_required: formData.receiptRequired,
       _terms_agreed: true,
-      _status: "pending", //固定
+      _status: "pending", // 固定
     });
 
     if (error) {
@@ -290,17 +273,12 @@ export default function ReservePage() {
                     <span
                       key={index}
                       className={`block text-xs rounded mt-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-[100px]
-                        ${
-                          slot.status === "pending"
-                            ? "bg-yellow-300"
-                            : "bg-red-300"
-                        }`}
+                        ${slot.status === "pending" ? "bg-yellow-300" : "bg-red-300"}`}
                       title={`${slot.start}～${slot.end} ${
                         slot.status === "pending" ? "仮予約" : "予約済"
                       }`}
                     >
-                      {slot.start}～{slot.end}{" "}
-                      {slot.status === "pending" ? "仮予約" : "予約済"}
+                      {slot.start}～{slot.end} {slot.status === "pending" ? "仮予約" : "予約済"}
                     </span>
                   ))
                 ) : (
@@ -315,18 +293,14 @@ export default function ReservePage() {
           <div className="mt-4">
             <h3 className="text-lg text-center font-semibold mb-2">ご予約日</h3>
             <p className="text-center">{formattedDate}</p>
-            <h3 className="text-lg text-center font-semibold my-5">
-              予約時間を選択
-            </h3>
+            <h3 className="text-lg text-center font-semibold my-5">予約時間を選択</h3>
             {availableSlots.length > 0 ? (
               <div className="flex gap-2">
                 {availableSlots.map((slot) => (
                   <button
                     key={slot}
                     className={`px-2 py-2 border rounded ${
-                      selectedSlot === slot
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200"
+                      selectedSlot === slot ? "bg-blue-500 text-white" : "bg-gray-200"
                     }`}
                     onClick={() => setSelectedSlot(slot)}
                   >
@@ -349,9 +323,7 @@ export default function ReservePage() {
               <label className="inline-flex items-center mt-2">
                 {/* validata:50文字以内 */}
                 顧客名　
-                <span className="text-xs border border-red-500 px-1 text-red-500">
-                  必須
-                </span>
+                <span className="text-xs border border-red-500 px-1 text-red-500">必須</span>
               </label>
               <input
                 type="text"
@@ -362,18 +334,14 @@ export default function ReservePage() {
                 // onBlur={() => trigger("name")} // onBlurでバリデーションを実行
                 className="w-full p-2 border rounded"
               />
-              {errors.name && (
-                <span className="text-red-500">{errors.name.message}</span>
-              )}
+              {errors.name && <span className="text-red-500">{errors.name.message}</span>}
             </div>
 
             <div>
               <label className="inline-flex items-center mt-2">
                 {/* validata:100文字以内 */}
                 フリガナ　
-                <span className="text-xs border border-red-500 px-1 text-red-500">
-                  必須
-                </span>
+                <span className="text-xs border border-red-500 px-1 text-red-500">必須</span>
               </label>
               <input
                 type="text"
@@ -383,9 +351,7 @@ export default function ReservePage() {
                 onChange={handleInputChange} // onChangeで入力値を管理
                 className="w-full p-2 border rounded"
               />
-              {errors.nameKana && (
-                <span className="text-red-500">{errors.nameKana.message}</span>
-              )}
+              {errors.nameKana && <span className="text-red-500">{errors.nameKana.message}</span>}
             </div>
 
             <div>
@@ -399,18 +365,14 @@ export default function ReservePage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded"
               />
-              {errors.phone && (
-                <span className="text-red-500">{errors.phone.message}</span>
-              )}
+              {errors.phone && <span className="text-red-500">{errors.phone.message}</span>}
             </div>
 
             <div>
               {/* validata:メールアドレスのみ */}
               <label className="inline-flex items-center mt-2">
                 メール　
-                <span className="text-xs border border-red-500 px-1 text-red-500">
-                  必須
-                </span>
+                <span className="text-xs border border-red-500 px-1 text-red-500">必須</span>
               </label>
               <input
                 type="email"
@@ -420,9 +382,7 @@ export default function ReservePage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded"
               />
-              {errors.email && (
-                <span className="text-red-500">{errors.email.message}</span>
-              )}
+              {errors.email && <span className="text-red-500">{errors.email.message}</span>}
             </div>
 
             <div>
@@ -436,9 +396,7 @@ export default function ReservePage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded"
               />
-              {errors.company && (
-                <span className="text-red-500">{errors.company.message}</span>
-              )}
+              {errors.company && <span className="text-red-500">{errors.company.message}</span>}
             </div>
 
             <div>
@@ -452,9 +410,7 @@ export default function ReservePage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded"
               />
-              {errors.xId && (
-                <span className="text-red-500">{errors.xId.message}</span>
-              )}
+              {errors.xId && <span className="text-red-500">{errors.xId.message}</span>}
             </div>
 
             <div>
@@ -468,17 +424,13 @@ export default function ReservePage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded"
               />
-              {errors.xHandle && (
-                <span className="text-red-500">{errors.xHandle.message}</span>
-              )}
+              {errors.xHandle && <span className="text-red-500">{errors.xHandle.message}</span>}
             </div>
 
             <div>
               <label className="inline-flex items-center mt-4">
                 利用用途　
-                <span className="text-xs border border-red-500 px-1 text-red-500">
-                  必須
-                </span>
+                <span className="text-xs border border-red-500 px-1 text-red-500">必須</span>
               </label>
               <div className="flex gap-4">
                 <label className="flex items-center pl-4">
@@ -487,9 +439,7 @@ export default function ReservePage() {
                     name="usageType"
                     value="個人利用"
                     checked={formData.usageType === "個人利用"}
-                    onChange={() =>
-                      setFormData({ ...formData, usageType: "個人利用" })
-                    }
+                    onChange={() => setFormData({ ...formData, usageType: "個人利用" })}
                     className="mr-2"
                   />
                   個人利用
@@ -500,9 +450,7 @@ export default function ReservePage() {
                     name="usageType"
                     value="商用利用"
                     checked={formData.usageType === "商用利用"}
-                    onChange={() =>
-                      setFormData({ ...formData, usageType: "商用利用" })
-                    }
+                    onChange={() => setFormData({ ...formData, usageType: "商用利用" })}
                     className="mr-2"
                   />
                   商用利用
@@ -521,9 +469,7 @@ export default function ReservePage() {
                 className="w-full p-2 border rounded"
                 rows={3}
               />
-              {errors.notes && (
-                <span className="text-red-500">{errors.notes.message}</span>
-              )}
+              {errors.notes && <span className="text-red-500">{errors.notes.message}</span>}
             </div>
 
             {/* validata:半角数字のみ */}
@@ -544,9 +490,7 @@ export default function ReservePage() {
                 className="w-full p-2 border rounded"
               />
               {errors.participants && (
-                <span className="text-red-500">
-                  {errors.participants.message}
-                </span>
+                <span className="text-red-500">{errors.participants.message}</span>
               )}
             </div>
 
@@ -562,9 +506,7 @@ export default function ReservePage() {
                 rows={3}
               />
               {errors.shootingDetails && (
-                <span className="text-red-500">
-                  {errors.shootingDetails.message}
-                </span>
+                <span className="text-red-500">{errors.shootingDetails.message}</span>
               )}
             </div>
 
@@ -603,14 +545,9 @@ export default function ReservePage() {
                 checked={formData.termsAgreed}
                 onChange={handleCheckboxChange}
               />
-              <label
-                htmlFor="termsAgreed"
-                className="inline-flex items-center ml-2"
-              >
+              <label htmlFor="termsAgreed" className="inline-flex items-center ml-2">
                 利用規約に同意する　
-                <span className="text-xs border border-red-500 px-1 text-red-500">
-                  必須
-                </span>
+                <span className="text-xs border border-red-500 px-1 text-red-500">必須</span>
               </label>
             </div>
 
@@ -618,12 +555,10 @@ export default function ReservePage() {
               className="w-full mt-6 bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
               // onClick={handleReservation}
             >
-              仮予約する
+              予約する
             </button>
             <div className="loading-area text-center">
-              {message && (
-                <div className="mt-4 text-center text-red-500">{message}</div>
-              )}
+              {message && <div className="mt-4 text-center text-red-500">{message}</div>}
             </div>
           </div>
         </form>
